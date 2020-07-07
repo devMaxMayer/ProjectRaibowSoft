@@ -1,11 +1,9 @@
-WebPack
- Babel
- Scss
- Eslint
- 2 Modes:
-  Dev
-  -Dev Server, SourceMaps, Eslint, Not Minified JS & CSS
-  Prod
-  -Minified Code
+подключение webix по CDN
 
-Git
+AMD асинхронная подгрузка ресурсов
+ require
+
+ routie
+
+
+
