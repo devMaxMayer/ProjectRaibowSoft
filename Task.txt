@@ -1,9 +1,13 @@
-подключение webix по CDN
-
-AMD асинхронная подгрузка ресурсов
- require
-
- routie
 
 
+
+npm install extract-text-webpack-plugin --save-dev
+npm install style-loader css-loader --save-dev
+npm install -D babel-loader @babel/core @babel/preset-env webpack
+npm install file-loader --save-dev
+npm install less-loader --save-dev
+npm install url-loader --save-dev
+npm i -D extract-text-webpack-plugin@next
+npm install --save-dev babel-preset-env
+// npm для dev-server
 

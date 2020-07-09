@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- Webix Library -->
+    <script src="static/libs/webix/codebase/webix.js"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" crossorigin="anonymous">
+
+    <!-- App -->
+    <script type="text/javascript" src="./app.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
+</head>
+<body>
+<script>
+    webix.ready(function(){
+        if (webix.env.touch)
+            webix.ui.fullScreen();
+        else if (webix.CustomScroll)
+            webix.CustomScroll.init();
+
+        const app = new MyApp({});
+        app.render();
+    });
+</script>
+</body>
+</html>
