@@ -25,7 +25,7 @@ function buildButton(label, route, icon) {
     }
 }
 
-require(['src/resources/static/js/views/main', 'views/books'], function (main, books) {
+require(['src/sources/static/js/views/main', 'views/books'], function (main, books) {
     webix.ready(function () {
         webix.ui({
             container: "app",

@@ -1,65 +1,96 @@
-var path = require("path");
-var webpack = require("webpack");
+const path = require('path')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-module.exports = function(env) {
+const isProd = process.env.NODE_ENV === 'production'
+const isDev = !isProd
 
-    var pack = require("./package.json");
-    var ExtractTextPlugin = require("extract-text-webpack-plugin");
-    var production = !!(env && env.production === "true");
-    var babelSettings = {
-        extends: path.join(__dirname, '/.babelrc')
-    };
-    var config = {
-        entry:"./src/resources/app.js",
-        output: {
-            path: path.resolve(__dirname, "dist"),
-            filename: "ManagerBooks.js"
-        },
-        devtool: "inline-source-map",
-        devServer:{
-            port : 1488
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    loader: "babel-loader?" + JSON.stringify(babelSettings)
-                },
-                {
-                    test: /\.(svg|png|jpg|gif)$/,
-                    loader: "url-loader?limit=25000"
-                },
-                {
-                    test: /\.(less|css)$/,
-                    loader: ExtractTextPlugin.extract("css-loader!less-loader")
-                }
-            ]
-        },
-        resolve: {
-            extensions: [".js"],
-            modules: ["./src/resources", "node_modules"],
-            alias:{
-                "jet-views":path.resolve(__dirname, "src/resources/views"),
-                "jet-locales":path.resolve(__dirname, "src/resources/locales")
+const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
+
+const jsLoaders = () => {
+    const loaders = [
+        {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env']
             }
-        },
-        plugins: [
-            new ExtractTextPlugin("./app.css"),
-            new webpack.DefinePlugin({
-                VERSION: `"${pack.version}"`,
-                APPNAME: `"${pack.name}"`,
-                PRODUCTION : production
-            })
-        ]
-    };
+        }
+    ]
 
-    if (production) {
-        config.plugins.push(
-            new  webpack.optimize.UglifyJsPlugin({
-                test: /\.js$/
-            })
-        );
+    if (isDev) {
+        loaders.push('eslint-loader')
     }
 
-    return config;
+    return loaders
+}
+
+
+module.exports = {
+    context: path.resolve(__dirname, 'src/sources'),
+    mode: 'development',
+    entry: ['@babel/polyfill', './index.js'],
+    output: {
+        filename: filename('js'),
+        path: path.resolve(__dirname, 'dist'),
+    },
+    resolve: {
+        extensions: ['.js'],
+        alias: {
+            '@': path.resolve(__dirname, 'src/sources'),
+            '@views': path.resolve(__dirname, 'src/sources/views'),
+            '@models': path.resolve(__dirname, 'src/sources/models')
+        }
+    },
+    devtool: isDev ? 'source-map' : false,
+    devServer: {
+        port: 1488,
+        hot: isDev
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HTMLWebpackPlugin({
+            template: 'index.html',
+            minify: {
+                removeComments: isProd,
+                collapseWhitespace: isProd
+            }
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/sources/favicon.ico'),
+                    to: path.resolve(__dirname, 'dist')
+                },
+            ],
+        }),
+        new MiniCssExtractPlugin({
+            filename: filename('css')
+        })
+
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            hmr: isDev,
+                            reloadAll: true
+                        }
+
+                    },
+                    'css-loader',
+                ],
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: jsLoaders()
+            }
+        ]
+    }
 }
