@@ -28,3 +28,7 @@ npm install --save @babel/polyfill
 npm i eslint eslint-loader babel-eslint
 
 npm install --save-dev eslint eslint-config-google
+
+npm i webix-jet -D
+
+npm install file-loader --save-dev

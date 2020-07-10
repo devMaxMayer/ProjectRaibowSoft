@@ -14,20 +14,19 @@
 
     <!-- App -->
     <script type="text/javascript" src="./app.js"></script>
-<!--    <link rel="stylesheet" type="text/css" href="styles/app.css">-->
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
 </head>
 <body>
-<div id="app" class="container"></div>
 <script>
-    // webix.ready(function(){
-    //     if (webix.env.touch)
-    //         webix.ui.fullScreen();
-    //     else if (webix.CustomScroll)
-    //         webix.CustomScroll.init();
-    //
-    //     const app = new MyApp({});
-    //     app.render();
-    // });
+    webix.ready(function(){
+        if (webix.env.touch)
+            webix.ui.fullScreen();
+        else if (webix.CustomScroll)
+            webix.CustomScroll.init();
+
+        const app = new MyApp({});
+        app.render();
+    });
 </script>
 </body>
 </html>

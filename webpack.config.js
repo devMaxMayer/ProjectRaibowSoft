@@ -30,7 +30,7 @@ const jsLoaders = () => {
 module.exports = {
     context: path.resolve(__dirname, 'src/sources'),
     mode: 'development',
-    entry: ['@babel/polyfill', './index.js'],
+    entry: ['@babel/polyfill', './app.js'],
     output: {
         filename: filename('js'),
         path: path.resolve(__dirname, 'dist'),
@@ -83,8 +83,13 @@ module.exports = {
                         }
 
                     },
-                    'css-loader',
                 ],
+            },
+            {
+                loader: 'css-loader',
+            },
+            {
+                loader: 'less-loader',
             },
             {
                 test: /\.js$/,
