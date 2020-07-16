@@ -1,101 +1,84 @@
-const path = require('path')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+var path = require("path");
+var webpack = require("webpack");
 
-const isProd = process.env.NODE_ENV === 'production'
-const isDev = !isProd
+module.exports = function(env) {
 
-const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
+	var pack = require("./package.json");
+	var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const jsLoaders = () => {
-    const loaders = [
-        {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-env']
-            }
-        }
-    ]
+	var production = !!(env && env.production === "true");
+	var asmodule = !!(env && env.module === "true");
+	var standalone = !!(env && env.standalone === "true");
 
-    if (isDev) {
-        loaders.push('eslint-loader')
-    }
+	var babelSettings = {
+		extends: path.join(__dirname, '/.babelrc')
+	};
 
-    return loaders
-}
+	var config = {
+		entry: "./sources/myapp.js",
+		output: {
+			path: path.join(__dirname, "codebase"),
+			publicPath:"/codebase/",
+			filename: "myapp.js"
+		},
+		devtool: "inline-source-map",
+		module: {
+			rules: [
+				{
+					test: /\.js$/,
+					loader: "babel-loader?" + JSON.stringify(babelSettings)
+				},
+				{
+					test: /\.(svg|png|jpg|gif)$/,
+					loader: "url-loader?limit=25000"
+				},
+				{
+					test: /\.(less|css)$/,
+					loader: ExtractTextPlugin.extract("css-loader!less-loader")
+				}
+			]
+		},
+		resolve: {
+			extensions: [".js"],
+			modules: ["./sources", "node_modules"],
+			alias:{
+				"jet-views":path.resolve(__dirname, "sources/views"),
+				"jet-locales":path.resolve(__dirname, "sources/locales")
+			}
+		},
+		plugins: [
+			new ExtractTextPlugin("./myapp.css"),
+			new webpack.DefinePlugin({
+				VERSION: `"${pack.version}"`,
+				APPNAME: `"${pack.name}"`,
+				PRODUCTION : production,
+				BUILD_AS_MODULE : (asmodule || standalone)
+			})
+		]
+	};
 
+	if (production) {
+		config.plugins.push(
+			new  webpack.optimize.UglifyJsPlugin({
+				test: /\.js$/
+			})
+		);
+	}
 
-module.exports = {
-    context: path.resolve(__dirname, 'src/sources'),
-    mode: 'development',
-    entry: ['@babel/polyfill', './app.js'],
-    output: {
-        filename: filename('js'),
-        path: path.resolve(__dirname, 'dist'),
-    },
-    resolve: {
-        extensions: ['.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src/sources'),
-            '@views': path.resolve(__dirname, 'src/sources/views'),
-            '@models': path.resolve(__dirname, 'src/sources/models')
-        }
-    },
-    devtool: isDev ? 'source-map' : false,
-    devServer: {
-        port: 1488,
-        hot: isDev
-    },
-    plugins: [
-        new CleanWebpackPlugin(),
-        new HTMLWebpackPlugin({
-            template: 'index.html',
-            minify: {
-                removeComments: isProd,
-                collapseWhitespace: isProd
-            }
-        }),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: path.resolve(__dirname, 'src/sources/favicon.ico'),
-                    to: path.resolve(__dirname, 'dist')
-                },
-            ],
-        }),
-        new MiniCssExtractPlugin({
-            filename: filename('css')
-        })
+	if (asmodule){
+		if (!standalone){
+			config.externals = config.externals || {};
+			config.externals = [ "webix-jet" ];
+		}
 
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            hmr: isDev,
-                            reloadAll: true
-                        }
+		const out = config.output;
+		const sub = standalone ? "full" : "module";
 
-                    },
-                ],
-            },
-            {
-                loader: 'css-loader',
-            },
-            {
-                loader: 'less-loader',
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: jsLoaders()
-            }
-        ]
-    }
+		out.library = pack.name.replace(/[^a-z0-9]/gi, "");
+		out.libraryTarget= "umd";
+		out.path = path.join(__dirname, "dist", sub);
+		out.publicPath = "/dist/"+sub+"/";
+	}
+
+	return config;
 }

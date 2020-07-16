@@ -1,52 +1,37 @@
 {
-  "name": "projectrainbowsoft",
-  "version": "1.0.0",
-  "description": "Books Manager App",
-  "main": "webpack.config.js",
+  "name": "webix-jet-app",
+  "version": "1.1.0",
+  "description": "Webix Jet App",
+  "main": "sources/myapp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --open",
-    "build": "cross-env NODE_ENV=production webpack --mode production"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/devMaxMayer/ProjectRaibowSoft.git"
+    "lint": "eslint sources/",
+    "build": "webpack --env.production true",
+    "module": "webpack --env.production true --env.module true",
+    "standalone": "webpack --env.production true --env.module true --env.standalone true",
+    "start": "webpack-dev-server --open"
   },
   "keywords": [
-    "js",
-    "javascript",
     "webix",
     "jet"
   ],
-  "author": "Maxim Blinov <dev.maxmayer@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/devMaxMayer/ProjectRaibowSoft/issues"
-  },
-  "homepage": "https://github.com/devMaxMayer/ProjectRaibowSoft#readme",
-  "private": true,
-  "browserslist": "> 0.25%, not dead",
+  "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^8.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^6.0.3",
-    "cross-env": "^7.0.2",
-    "css-loader": "^3.6.0",
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.14.0",
-    "eslint-loader": "^4.0.2",
-    "file-loader": "^6.0.0",
-    "html-webpack-plugin": "^4.3.0",
-    "mini-css-extract-plugin": "^0.9.0",
-    "webix-jet": "^2.1.3",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.7.2",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "less": "^3.0.4",
+    "less-loader": "^4.0.5",
+    "url-loader": "^1.0.1",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.10.4"
+    "webix-jet": "^1.5.0"
   }
 }

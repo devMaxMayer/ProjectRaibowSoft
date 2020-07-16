@@ -1,0 +1,7 @@
+[
+    { "id":1, "bookId":1, "userId":1, "date":"10.10.2020", "type":"выдача" },
+    { "id":2, "bookId":4, "userId":2, "date":"11.10.2020", "type":"выдача" },
+    { "id":3, "bookId":2, "userId":4, "date":"12.10.2020", "type":"выдача" },
+    { "id":4, "bookId":3, "userId":3, "date":"13.10.2020", "type":"выдача" },
+    { "id":1, "bookId":1, "userId":1, "date":"14.10.2020", "type":"возврат" }
+]

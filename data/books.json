@@ -1,0 +1,9 @@
+[
+    { "id":1, "isbn":"01233349-1", "title":"1994", "author":"Oruel","year": 1940 ,"genre":"antiutopiya", "quantity":1,"status": 0 },
+    { "id":2, "isbn":"01233349-2", "title":"1994", "author":"Oruel","year": 1941 ,"genre":"antiutopiya", "quantity":4,"status": 0 },
+    { "id":3, "isbn":"01233349-3", "title":"1994", "author":"Oruel","year": 1942 ,"genre":"antiutopiya", "quantity":2,"status": 0 },
+    { "id":4, "isbn":"01233349-4", "title":"1994", "author":"Oruel","year": 1940 ,"genre":"antiutopiya", "quantity":4,"status": 0 },
+    { "id":5, "isbn":"01233349-5", "title":"1994", "author":"Oruel","year": 1943 ,"genre":"antiutopiya", "quantity":4,"status": 0 },
+    { "id":6, "isbn":"01233349-6", "title":"1994", "author":"Oruel","year": 1945 ,"genre":"antiutopiya", "quantity":1,"status": 0 },
+    { "id":7, "isbn":"01233349-7", "title":"1994", "author":"Oruel","year": 1940 ,"genre":"antiutopiya", "quantity":2,"status": 0 }
+]
