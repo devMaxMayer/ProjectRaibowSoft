@@ -12,5 +12,5 @@ require (
 	github.com/revel/config v1.0.0 // indirect
 	github.com/revel/modules v1.0.0
 	github.com/revel/revel v1.0.0
-	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
+	golang.org/x/net v0.7.0 // indirect
 )
